@@ -1,0 +1,72 @@
+{
+  "url": "https://xenoblade3.cn/%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F/BUFF%EF%BC%86DEBUFF%E7%B3%BB%E7%BB%9F",
+  "title": "战斗系统/BUFF＆DEBUFF系统 - 送行者的收集手册",
+  "headings": {
+    "h1": [
+      "BUFF＆DEBUFF系统"
+    ],
+    "h2": [
+      "BUFF＆DEBUFF系统",
+      "buff/debuff列表"
+    ],
+    "h3": [
+      "buff/debuff效果值：",
+      "buff/debuff 持续时间：",
+      "我方debuff抗性：",
+      "debuff成功率与debuff抗性：",
+      "buff列表",
+      "物理debuff列表",
+      "以太debuff列表"
+    ]
+  },
+  "paragraphs": [
+    "实际buff效果值：",
+    "buff自身基础效果值×(1+buff效果提升(被动，宝珠)){buff自身基础效果值}{×}{(1+}{buff效果提升}{(被动，宝珠)}{)}buff自身基础效果值×(1+buff效果提升(被动，宝珠))",
+    "实际debuff效果值：",
+    "debuff自身基础效果值×(1+debuff效果提升(宝珠，dot相关：出血，灼热)){debuff自身基础效果值}{×}{(1+}{debuff效果提升}{(宝珠，dot相关：}\\href{data/item/愤怒护符◆◆◆}{出血}{，}\\href{data/item/业火之护符◆◆◆}{灼热}{)}{)}debuff自身基础效果值×(1+debuff效果提升(宝珠，dot相关：出血，灼热))",
+    "buff/debuff宝珠效果最大值：50%",
+    "buff被动效果值：刚力支援，35%",
+    "Ps：觉醒的3个buff效果只有第一个会受到上述影响",
+    "buff持续时间：",
+    "buff基础持续时间×(1+buff时间延长)×融合奖励系数×连环戒指系数{buff基础持续时间}{×}{(1+}{buff时间延长}{)}{×}{融合奖励系数}{×}\\href{战斗系统/伤害计算公式}{连环戒指系数}buff基础持续时间×(1+buff时间延长)×融合奖励系数×连环戒指系数",
+    "debuff持续时间：",
+    "debuff基础持续时间×(1+debuff时间延长)×融合奖励系数×连环戒指系数+debuff基础持续时间×百分比debuff时间延长{debuff基础持续时间}{×}{(1+}{debuff时间延长}{)}{×}{融合奖励系数}{×}\\href{战斗系统/伤害计算公式}{连环戒指系数}{+}{debuff基础持续时间}{×}{百分比debuff时间延长}debuff基础持续时间×(1+debuff时间延长)×融合奖励系数×连环戒指系数+debuff基础持续时间×百分比debuff时间延长",
+    "融合奖励系数：2.0",
+    "百分比debuff时间延长：巨硕新月（百人将死）",
+    "Ps：buff/debuff持续时间均有上限，详细可以在下方列表中查看",
+    "Ps：领域不属于buff与debuff的范畴内",
+    "我方对所有debuff的抗性默认状态下为0能够增加我方debuff抗性的手段：1.对应debuff抗性饰品2.机械刺客可继承被动：反弱化肉体",
+    "debuff抗性：",
+    "基础debuff抗性+加算debuff抗性上升−抵抗下降(debuff){基础debuff抗性}{+}{加算debuff抗性上升}{-}{抵抗下降(debuff)}基础debuff抗性+加算debuff抗性上升−抵抗下降(debuff)",
+    "debuff成功率：",
+    "(该debuff基础成功率−debuff抗性−等级差抗性修正)×连环戒指系数{(}{该debuff基础成功率}{-}{debuff抗性}{-}\\href{战斗系统/等级差修正}{等级差抗性修正}{)}{×}\\href{战斗系统/伤害计算公式}{连环戒指系数}(该debuff基础成功率−debuff抗性−等级差抗性修正)×连环戒指系数",
+    "debuff基础成功率：可在下方列表中查看",
+    "注意事项：30帧 = 1s"
+  ],
+  "list_items": [
+    "BUFF＆DEBUFF系统buff/debuff效果值：buff/debuff 持续时间：我方debuff抗性：debuff成功率与debuff抗性：",
+    "buff/debuff效果值：",
+    "buff/debuff 持续时间：",
+    "我方debuff抗性：",
+    "debuff成功率与debuff抗性：",
+    "buff/debuff列表buff列表物理debuff列表以太debuff列表",
+    "buff列表",
+    "物理debuff列表",
+    "以太debuff列表",
+    "buff/debuff效果值：",
+    "buff/debuff 持续时间：",
+    "我方debuff抗性：",
+    "debuff成功率与debuff抗性：",
+    "buff列表",
+    "物理debuff列表",
+    "以太debuff列表"
+  ],
+  "all_text": "BUFF＆DEBUFF系统\n目录\nBUFF＆DEBUFF系统\nbuff/debuff效果值：\nbuff/debuff 持续时间：\n我方debuff抗性：\ndebuff成功率与debuff抗性：\nbuff/debuff列表\nbuff列表\n物理debuff列表\n以太debuff列表\nBUFF＆DEBUFF系统\nbuff/debuff效果值：\n实际buff效果值：\nb\nu\nf\nf\n自身基础效果值\n×\n(\n1\n+\nb\nu\nf\nf\n效果提升\n(\n被动，宝珠\n)\n)\n{buff自身基础效果值}{×}{(1+}{buff效果提升}{(被动，宝珠)}{)}\nb\nu\nf\nf\n自身基础效果值\n×\n(\n1\n+\nb\nu\nf\nf\n效果提升\n(\n被动，宝珠\n)\n)\n实际debuff效果值：\nd\ne\nb\nu\nf\nf\n自身基础效果值\n×\n(\n1\n+\nd\ne\nb\nu\nf\nf\n效果提升\n(\n宝珠，\nd\no\nt\n相关：\n出血，灼热\n)\n)\n{debuff自身基础效果值}{×}{(1+}{debuff效果提升}{(宝珠，dot相关：}\\href{data/item/愤怒护符◆◆◆}{出血}{，}\\href{data/item/业火之护符◆◆◆}{灼热}{)}{)}\nd\ne\nb\nu\nf\nf\n自身基础效果值\n×\n(\n1\n+\nd\ne\nb\nu\nf\nf\n效果提升\n(\n宝珠，\nd\no\nt\n相关：\n出血\n，\n灼热\n)\n)\nbuff/debuff宝珠效果最大值：50%\nbuff被动效果值：\n刚力支援\n，35%\nPs：觉醒的3个buff效果只有第一个会受到上述影响\nbuff/debuff 持续时间：\nbuff持续时间：\nb\nu\nf\nf\n基础持续时间\n×\n(\n1\n+\nb\nu\nf\nf\n时间延长\n)\n×\n融合奖励系数\n×\n连环戒指系数\n{buff基础持续时间}{×}{(1+}{buff时间延长}{)}{×}{融合奖励系数}{×}\\href{战斗系统/伤害计算公式}{连环戒指系数}\nb\nu\nf\nf\n基础持续时间\n×\n(\n1\n+\nb\nu\nf\nf\n时间延长\n)\n×\n融合奖励系数\n×\n连环戒指系数\ndebuff持续时间：\nd\ne\nb\nu\nf\nf\n基础持续时间\n×\n(\n1\n+\nd\ne\nb\nu\nf\nf\n时间延长\n)\n×\n融合奖励系数\n×\n连环戒指系数\n+\nd\ne\nb\nu\nf\nf\n基础持续时间\n×\n百分比\nd\ne\nb\nu\nf\nf\n时间延长\n{debuff基础持续时间}{×}{(1+}{debuff时间延长}{)}{×}{融合奖励系数}{×}\\href{战斗系统/伤害计算公式}{连环戒指系数}{+}{debuff基础持续时间}{×}{百分比debuff时间延长}\nd\ne\nb\nu\nf\nf\n基础持续时间\n×\n(\n1\n+\nd\ne\nb\nu\nf\nf\n时间延长\n)\n×\n融合奖励系数\n×\n连环戒指系数\n+\nd\ne\nb\nu\nf\nf\n基础持续时间\n×\n百分比\nd\ne\nb\nu\nf\nf\n时间延长\n融合奖励系数：2.0\n百分比debuff时间延长：\n巨硕新月（百人将死）\nPs：buff/debuff持续时间均有上限，详细可以在下方列表中查看\nPs：领域不属于buff与debuff的范畴内\n我方debuff抗性：\n我方对所有debuff的抗性默认状态下为0\n能够增加我方debuff抗性的手段：\n1.对应debuff抗性饰品\n2.机械刺客可继承被动：\n反弱化肉体\ndebuff成功率与debuff抗性：\ndebuff抗性：\n基础\nd\ne\nb\nu\nf\nf\n抗性\n+\n加算\nd\ne\nb\nu\nf\nf\n抗性上升\n−\n抵抗下降\n(\nd\ne\nb\nu\nf\nf\n)\n{基础debuff抗性}{+}{加算debuff抗性上升}{-}{抵抗下降(debuff)}\n基础\nd\ne\nb\nu\nf\nf\n抗性\n+\n加算\nd\ne\nb\nu\nf\nf\n抗性上升\n−\n抵抗下降\n(\nd\ne\nb\nu\nf\nf\n)\ndebuff成功率：\n(\n该\nd\ne\nb\nu\nf\nf\n基础成功率\n−\nd\ne\nb\nu\nf\nf\n抗性\n−\n等级差抗性修正\n)\n×\n连环戒指系数\n{(}{该debuff基础成功率}{-}{debuff抗性}{-}\\href{战斗系统/等级差修正}{等级差抗性修正}{)}{×}\\href{战斗系统/伤害计算公式}{连环戒指系数}\n(\n该\nd\ne\nb\nu\nf\nf\n基础成功率\n−\nd\ne\nb\nu\nf\nf\n抗性\n−\n等级差抗性修正\n)\n×\n连环戒指系数\ndebuff基础成功率：可在下方列表中查看\nbuff/debuff列表\nbuff列表\n注意事项：30帧 = 1s\n效果图标\n效果名称\n效果值1\n效果值2\n效果值3\n时间（上限）\n效果触发间隔\n是否在随机列表中\n目标优先级（排在前的优先）\n具体效果\n暴击上升\n25%\n20（40）\n是\nA，D\n暴击率提升原来的%\n命中上升\n25%\n20（40）\n是\nA，D\n命中提升%\n补充力量\n50%\n是\nA，D\n下一个释放的战技伤害提升%（B类）\n伤害装甲\n20%\n是\nD，H\n吸收伤害%\n以太钩锚\n1次\n20（40）\n是\nD，H\n无视连击和反应动作一定次数\n攻击上升\n25%\n20（40）\n是\nA，D\n伤害提升%（A类）\n暴击强化\n50%\n20（40）\n是\nA，D\n暴击伤害增加%\n回复量增加\n50%\n20（40）\n是\nH\nhp回复量提高%\n延迟治疗\n30%\n15%\n20（40）\n是\nD\n当hp低于%，回复%hp\n反击治疗\n5%\n3\n15（30）\n是\nD\n受到伤害时回复%hp一定次数\n增益效果时间停止\n20（40）\n否\n全体增益效果时间不再流逝\n无敌\n10（20）\n否\nD，H\n敌方所有攻击无效（无敌）\n觉醒\n75%\n25%\n50%\n20（40）\n否\n伤害提升%（A类），伤害减免%，填充量上升%\n防御上升\n15%\n20（40）\n是\nD\n受到伤害减少%\n替身\n1次\n20（40）\n是\nD\n回避敌方攻击一定次数\n减益效果无效护盾\n1次\n20（40）\n是\nD，A\n消除/无视敌方减益效果一定次数\n填充上升\n20%\n20（40）\n是\nA，D\n填充量上升%\n梅比乌斯之灵\n100%\n否\nD，H\n无效化所有攻击\n回避上升\n10%\n20（40）\n是\nD\n回避提升%\n再生\n1.5%\n30（60）\n45帧\n否\n每隔一定时间帧，回复%hp\n普通攻击禁用\n30（60）\n否\n无视联合连击以外的所有攻击\n伤害装甲2\n10%\n是\nD，H\n吸收伤害%\n无敌2\n否\nD，H\n敌方所有攻击无效（无敌）\n再生2\n0.25%\n30（60）\n45帧\n否\n每隔一定时间帧，回复%hp\n填充上升2\n200%\n30（30）\n是\nA，D\n填充量上升%\n觉醒2\n75%\n25%\n50%\n30（60）\n否\n伤害提升%（A类），伤害减免%，填充量上升%\n物理debuff列表\n效果图标\n效果名称\n效果值1\n效果值2\n效果值3\n时间（上限）\n效果触发间隔\n基础成功率\n是否在随机列表中\n目标优先级（排在前的优先）\n具体效果\n攻击下降\n25%\n15（30）\n75%\n是\nA，D\n伤害降低%（A类）\n物理防御下降\n25%\n15（30）\n75%\n是\nD，H\n物理防御下降原来的%\n战技封锁\n15（30）\n75%\n否\nD，A\n不得使用战技\n锁定目标\n10（15）\n100%\n否\nA，D\n拥有该debuff的目标攻击对象锁定为debuff发起者\n格挡封锁\n15（30）\n75%\n是\nD，A\n格挡无效\n命中下降\n25%\n15（30）\n75%\n是\nA，D\n命中下降%\n回避下降\n25%\n15（30）\n75%\n是\nD，A\n回避下降%\n梅比乌斯枷锁\n15（30）\n否\n无法移动，无法攻击，无法使用战技\n出血\n4%\n46（92）\n60帧\n100%\n否\nD，H\n每隔一定时间帧受到%给于该效果触发帧所造成的伤害\n以太debuff列表\n效果图标\n效果名称\n效果值1\n效果值2\n效果值3\n时间（上限）\n效果触发间隔\n基础成功率\n是否在随机列表中\n目标优先级（排在前的优先）\n具体效果\n以太防御下降\n25%\n15（30）\n75%\n是\nD，H\n以太防御下降原来的%\n抵抗下降\n25%\n15（30）\n75%\n是\nD，A\n所有抗性下降25%\n睡眠\n20（30）\n40%\n是\nA，H\n失去行动能力（受到伤害有概率解除）\n治疗封锁\n15（30）\n75%\n否\nD，H\n无法受到治疗\n束缚\n7.5%（11.25）\n40%\n是\nD，A\n无法行动一段时间，回避生效但格挡不生效\n伤害连结\n5（范围）\n15（30）\n100%\n否\nD，A\n携有该debuff的敌人受到的伤害的100%会向（范围）内的敌人传播\n填充下降2\n25%\n15（30）\n75%\n否\n填充量下降%\n填充下降\n25%\n15（22.5）\n75%\n否\nD，H\n填充量下降%\n日蚀灵魂\n否\n受到该debuff的目标会暂时攻击队友\n防卫者封锁\n20（20）\n否\n防卫者无法行动\n攻击者封锁\n20（20）\n否\n攻击者无法行动\n治疗者封锁\n20（20）\n否\n治疗者无法行动\n灵衔连结封锁\n否\n无法变身衔尾蛇\n火之钟不足，攻击下降\n25%\n否\n命火之钟剩余量小于1/3时，造成伤害下降%（A类）\n全属性下降\n30%\n50%\n30%\n60（60）\n否\n造成伤害下降%（A类），受到伤害提升50%（伤害减免区间，独立），命中和回避下降%\n灼热\n8%\n10（20）\n30帧\n100%\n否\nD，H\n每隔一定时间帧受到%给于该效果触发帧所造成的伤害\n冰冻\n6%\n21.5（43）\n45帧\n100%\n否\nD，H\n每隔一定时间帧受到%给于该效果触发帧所造成的伤害\n毒\n12%\n24（48）\n120帧\n100%\n否\nD，H\n每隔一定时间帧受到%给于该效果触发帧所造成的伤害",
+  "text_length": 3982,
+  "scraped_at": "2026-08-18 01:08:11",
+  "source": {
+    "url": "https://xenoblade3.cn/%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F/BUFF%EF%BC%86DEBUFF%E7%B3%BB%E7%BB%9F",
+    "title": "BUFF＆DEBUFF系统",
+    "context": "BUFF＆DEBUFF系统"
+  }
+}

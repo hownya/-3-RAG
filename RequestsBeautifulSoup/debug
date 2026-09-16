@@ -1,0 +1,105 @@
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import unquote
+import json
+
+def diagnose_page():
+    """诊断页面，查看实际返回的内容"""
+    
+    url = 'https://xenoblade3.cn/%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F'
+    
+    # 请求页面
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    }
+    
+    response = requests.get(url, headers=headers, timeout=10)
+    
+    print("="*60)
+    print("页面诊断")
+    print("="*60)
+    print(f"状态码: {response.status_code}")
+    print(f"内容类型: {response.headers.get('Content-Type')}")
+    print(f"内容大小: {len(response.text)} 字符")
+    print()
+    
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # 1. 检查是否有JavaScript内容
+    scripts = soup.find_all('script')
+    print(f"1. Script标签: {len(scripts)} 个")
+    
+    # 检查是否有动态加载的特征
+    for script in scripts[:3]:
+        src = script.get('src', '')
+        if 'react' in src.lower() or 'vue' in src.lower() or 'angular' in src.lower():
+            print(f"   ⚠️ 检测到前端框架: {src}")
+    
+    # 2. 检查主要内容容器
+    print("\n2. 主要内容容器:")
+    main_selectors = ['main', 'article', '#content', '.content', '.main-content', '#main']
+    for selector in main_selectors:
+        elements = soup.select(selector)
+        if elements:
+            print(f"   ✅ 找到: {selector} ({len(elements)} 个)")
+            # 显示第一个的内容预览
+            text = elements[0].text.strip()[:100]
+            print(f"      预览: {text}...")
+    
+    # 3. 检查段落
+    print(f"\n3. 段落 (p标签): {len(soup.find_all('p'))} 个")
+    paragraphs = soup.find_all('p')
+    for i, p in enumerate(paragraphs[:5], 1):
+        text = p.text.strip()
+        if text:
+            print(f"   {i}. {text[:80]}...")
+    
+    # 4. 检查标题
+    print(f"\n4. 标题:")
+    for level in range(1, 7):
+        tags = soup.find_all(f'h{level}')
+        if tags:
+            print(f"   h{level}: {len(tags)} 个")
+            for tag in tags[:3]:
+                print(f"      - {tag.text.strip()[:50]}")
+    
+    # 5. 检查表格
+    print(f"\n5. 表格: {len(soup.find_all('table'))} 个")
+    
+    # 6. 检查列表
+    print(f"\n6. 列表: {len(soup.find_all(['ul', 'ol']))} 个")
+    
+    # 7. 检查图片
+    print(f"\n7. 图片: {len(soup.find_all('img'))} 个")
+    
+    # 8. 检查是否有数据属性（可能是JSON数据）
+    print("\n8. 数据属性:")
+    data_elements = soup.find_all(attrs={"data-": True})
+    print(f"   带data-属性的元素: {len(data_elements)} 个")
+    
+    # 9. 检查内嵌JSON
+    scripts_with_json = 0
+    for script in soup.find_all('script'):
+        if script.string and ('window.__' in script.string or 'JSON.parse' in script.string):
+            scripts_with_json += 1
+    print(f"   包含数据的script: {scripts_with_json} 个")
+    
+    # 10. 保存HTML用于分析
+    html_file = 'page_diagnosis.html'
+    with open(html_file, 'w', encoding='utf-8') as f:
+        f.write(response.text)
+    print(f"\n📁 完整HTML已保存到: {html_file}")
+    
+    # 11. 提取所有文本（用于比较）
+    all_text = soup.get_text(separator='\n', strip=True)
+    print(f"\n📝 总文本字符数: {len(all_text)}")
+    print(f"\n文本预览 (前500字符):")
+    print("-" * 60)
+    print(all_text[:500])
+    
+    return soup
+
+if __name__ == "__main__":
+    soup = diagnose_page()

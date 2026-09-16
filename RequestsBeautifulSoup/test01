@@ -1,0 +1,317 @@
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin, urlparse, unquote
+import json
+import os
+import time
+import hashlib
+from typing import List, Dict, Optional
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+class WikiScraper:
+    """维基风格页面爬虫 - 专门处理目录+子页面"""
+    
+    def __init__(self, base_url: str, output_dir: str = 'wiki_data'):
+        self.base_url = base_url
+        self.output_dir = output_dir
+        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(os.path.join(output_dir, 'pages'), exist_ok=True)
+        
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        })
+        self.timeout = 10
+        
+        self.all_pages = []
+        self.visited = set()
+    
+    def fetch_page(self, url: str) -> Optional[str]:
+        """获取页面"""
+        try:
+            logger.info(f"📥 获取: {url}")
+            response = self.session.get(url, timeout=self.timeout)
+            response.raise_for_status()
+            return response.text
+        except Exception as e:
+            logger.error(f"❌ 获取失败: {e}")
+            return None
+    
+    def extract_links_from_index(self, html: str, base_url: str) -> List[Dict]:
+        """
+        从目录页提取所有子页面链接
+        根据诊断，内容在列表（ul/li）中
+        """
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        # 找到main区域
+        main_content = soup.find('main')
+        if not main_content:
+            main_content = soup  # 如果找不到main，使用整个页面
+        
+        links = []
+        
+        # 方法1: 查找所有列表中的链接
+        for ul in main_content.find_all(['ul', 'ol']):
+            for li in ul.find_all('li'):
+                # 查找li中的链接
+                a_tag = li.find('a', href=True)
+                if a_tag:
+                    href = a_tag.get('href')
+                    text = a_tag.get_text(strip=True)
+                    
+                    # 过滤
+                    if href and not href.startswith('#') and not href.startswith('javascript:'):
+                        # 构建完整URL
+                        full_url = urljoin(base_url, href)
+                        
+                        # 只保留同域名
+                        if urlparse(full_url).netloc == urlparse(base_url).netloc:
+                            links.append({
+                                'url': full_url,
+                                'title': text,
+                                'context': li.get_text(strip=True)[:200]  # 上下文
+                            })
+        
+        # 方法2: 如果上面的方法没找到，查找所有直接链接
+        if not links:
+            for a in main_content.find_all('a', href=True):
+                href = a.get('href')
+                text = a.get_text(strip=True)
+                
+                if href and not href.startswith('#') and not href.startswith('javascript:'):
+                    full_url = urljoin(base_url, href)
+                    if urlparse(full_url).netloc == urlparse(base_url).netloc:
+                        links.append({
+                            'url': full_url,
+                            'title': text,
+                            'context': text
+                        })
+        
+        return links
+    
+    def extract_page_content(self, html: str, url: str) -> Dict:
+        """提取单个页面的内容"""
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        # 移除无关元素
+        for elem in soup.find_all(['script', 'style', 'nav', 'footer', 'header']):
+            elem.decompose()
+        
+        # 找到主要内容区域
+        main_content = soup.find('main')
+        if not main_content:
+            main_content = soup.find('article')
+        if not main_content:
+            main_content = soup.find('div', class_='content')
+        if not main_content:
+            main_content = soup.find('body')
+        
+        # 提取标题
+        title = soup.find('title')
+        title_text = title.get_text(strip=True) if title else '无标题'
+        
+        # 提取所有文本内容（保留结构）
+        # 方法1: 提取所有段落
+        paragraphs = []
+        for p in main_content.find_all('p'):
+            text = p.get_text(strip=True)
+            if text and len(text) > 5:
+                paragraphs.append(text)
+        
+        # 方法2: 提取所有列表项
+        list_items = []
+        for ul in main_content.find_all(['ul', 'ol']):
+            for li in ul.find_all('li'):
+                text = li.get_text(strip=True)
+                if text:
+                    list_items.append(text)
+        
+        # 方法3: 提取标题
+        headings = {}
+        for level in range(1, 7):
+            tag_name = f'h{level}'
+            tags = main_content.find_all(tag_name)
+            if tags:
+                headings[tag_name] = [tag.get_text(strip=True) for tag in tags if tag.get_text(strip=True)]
+        
+        # 提取所有文本（按照文档顺序）
+        all_text = main_content.get_text(separator='\n', strip=True)
+        
+        return {
+            'url': url,
+            'title': title_text,
+            'headings': headings,
+            'paragraphs': paragraphs,
+            'list_items': list_items,
+            'all_text': all_text,
+            'text_length': len(all_text),
+            'scraped_at': time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+    
+    def save_page(self, data: Dict):
+        """保存页面数据"""
+        url_hash = hashlib.md5(data['url'].encode()).hexdigest()[:16]
+        
+        # 保存JSON
+        json_file = os.path.join(self.output_dir, 'pages', f"{url_hash}.json")
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        # 保存Markdown（易读）
+        md_file = os.path.join(self.output_dir, 'pages', f"{url_hash}.md")
+        with open(md_file, 'w', encoding='utf-8') as f:
+            f.write(f"# {data['title']}\n\n")
+            f.write(f"URL: {data['url']}\n\n")
+            
+            if data['headings']:
+                f.write("## 章节\n\n")
+                for level, headings in data['headings'].items():
+                    for heading in headings:
+                        f.write(f"- {heading}\n")
+                f.write("\n")
+            
+            if data['paragraphs']:
+                f.write("## 段落内容\n\n")
+                for p in data['paragraphs']:
+                    f.write(f"{p}\n\n")
+            
+            if data['list_items']:
+                f.write("## 列表内容\n\n")
+                for item in data['list_items']:
+                    f.write(f"- {item}\n")
+        
+        logger.info(f"💾 已保存: {json_file}")
+        return json_file
+    
+    def scrape_index(self) -> List[Dict]:
+        """爬取目录页，提取所有子页面链接"""
+        logger.info(f"🔍 分析目录页: {self.base_url}")
+        
+        html = self.fetch_page(self.base_url)
+        if not html:
+            return []
+        
+        # 提取所有链接
+        links = self.extract_links_from_index(html, self.base_url)
+        
+        logger.info(f"📎 找到 {len(links)} 个子页面链接")
+        
+        # 显示找到的链接
+        for i, link in enumerate(links[:10], 1):
+            logger.info(f"  {i}. {link['title']} -> {link['url']}")
+        
+        if len(links) > 10:
+            logger.info(f"  ... 还有 {len(links) - 10} 个链接")
+        
+        return links
+    
+    def scrape_all_pages(self, links: List[Dict], delay: float = 1.0) -> List[Dict]:
+        """爬取所有子页面"""
+        results = []
+        
+        for i, link in enumerate(links, 1):
+            url = link['url']
+            title = link['title']
+            
+            if url in self.visited:
+                continue
+            
+            logger.info(f"\n📄 [{i}/{len(links)}] 爬取: {title}")
+            
+            html = self.fetch_page(url)
+            if not html:
+                continue
+            
+            # 提取内容
+            data = self.extract_page_content(html, url)
+            data['source'] = link  # 记录来源信息
+            
+            # 保存
+            self.save_page(data)
+            self.all_pages.append(data)
+            self.visited.add(url)
+            results.append(data)
+            
+            # 礼貌延迟
+            time.sleep(delay)
+        
+        return results
+    
+    def generate_summary(self):
+        """生成汇总报告"""
+        summary = {
+            'base_url': self.base_url,
+            'total_pages': len(self.all_pages),
+            'scraped_at': time.strftime('%Y-%m-%d %H:%M:%S'),
+            'pages': [
+                {
+                    'url': p['url'],
+                    'title': p['title'],
+                    'text_length': p.get('text_length', 0),
+                    'paragraphs': len(p.get('paragraphs', [])),
+                    'list_items': len(p.get('list_items', []))
+                }
+                for p in self.all_pages
+            ]
+        }
+        
+        # 保存汇总
+        summary_file = os.path.join(self.output_dir, 'summary.json')
+        with open(summary_file, 'w', encoding='utf-8') as f:
+            json.dump(summary, f, ensure_ascii=False, indent=2)
+        
+        logger.info(f"📊 汇总已保存: {summary_file}")
+        
+        # 打印统计
+        print("\n" + "="*60)
+        print("📊 爬取完成")
+        print("="*60)
+        print(f"总页面数: {len(self.all_pages)}")
+        print(f"总文本: {sum(p.get('text_length', 0) for p in self.all_pages)} 字符")
+        print(f"📁 数据保存在: {self.output_dir}")
+        print("="*60)
+    
+    def run(self):
+        """完整运行流程"""
+        # 1. 爬取目录页，获取所有子页面链接
+        links = self.scrape_index()
+        
+        if not links:
+            logger.error("❌ 没有找到任何子页面链接")
+            return
+        
+        # 2. 爬取所有子页面
+        results = self.scrape_all_pages(links)
+        
+        # 3. 生成汇总
+        self.generate_summary()
+        
+        return results
+
+
+def main():
+    # 使用示例
+    scraper = WikiScraper(
+        base_url='https://xenoblade3.cn/%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F',
+        output_dir='xenoblade_wiki'
+    )
+    
+    results = scraper.run()
+    
+    # 显示爬取的内容
+    print("\n📄 爬取的页面列表:")
+    for i, page in enumerate(results, 1):
+        print(f"  {i}. {page['title']}")
+        print(f"     段落: {len(page.get('paragraphs', []))} 个")
+        print(f"     列表项: {len(page.get('list_items', []))} 个")
+        print(f"     文本: {page.get('text_length', 0)} 字符")
+
+
+if __name__ == "__main__":
+    main()
